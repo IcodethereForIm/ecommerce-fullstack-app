@@ -1,0 +1,105 @@
+/* Banner container */
+.promohero {
+  position: relative;
+  width: 100%;
+  height: 400px; /* fixed height for consistency */
+  overflow: hidden;
+}
+
+/* Image */
+.promohero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* fills container */
+  object-position: top;    /* shows upper part */
+}
+
+/* Dark overlay */
+.promohero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 223, 100, 0.35);
+  pointer-events: none;
+}
+
+/* Overlay container for inline content */
+.promohero .overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;      /* vertically center items */
+  gap: 15px;                /* space between text and button */
+  z-index: 10;
+  color: #1a1a1a;
+  max-width: 90%;
+  padding: 0 15px;
+}
+
+/* Text wrapper */
+.promohero .overlay-text {
+  display: flex;
+  flex-direction: row;      /* horizontal layout */
+  align-items: center;
+  gap: 10px;
+}
+
+.promohero .overlay-text h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.promohero .overlay-text p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Button */
+.promohero .overlay .btn {
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .promohero .overlay {
+    gap: 10px;
+  }
+
+  .promohero .overlay-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .promohero .overlay-text p {
+    font-size: 0.9rem;
+  }
+
+  .promohero .overlay .btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .promohero .overlay {
+    flex-direction: column; /* stack on very small screens */
+    gap: 8px;
+  }
+
+  .promohero .overlay-text h1 {
+    font-size: 1.2rem;
+  }
+
+  .promohero .overlay-text p {
+    font-size: 0.8rem;
+  }
+
+  .promohero .overlay .btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
