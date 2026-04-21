@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import styles from "./Hero.module.css"
+import { buildUrl } from "../../../config/api";
+const api = (path) => buildUrl(`/api${path}`);
+
 function Hero({section,assetKey,type}){
     const [banners, setBanners] = useState([]);
       const [index, setIndex] = useState(0);
@@ -10,7 +13,7 @@ function Hero({section,assetKey,type}){
       // 🔹 Fetch images
       useEffect(() => {
         setLoading(true); // start loading when section/type changes
-        fetch(`http://127.0.0.1:8000/api/site-assets/${section?.section}/${type}/${assetKey}`)
+        fetch(api(`/site-assets/${section?.section}/${type}/${assetKey}`))
           .then((res) => res.json())
           .then((data) => {
             const bannerData = data.data || [];

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserInfo,logoutUser } from "../services/AuthService";
 import ShippingAddress from "../components/ShippingAdresses";
 import AccountDetails from "../components/AccountDetails";
 
@@ -29,31 +30,14 @@ function Profile(){
     }
             
 
-
-           const res= await fetch("http://127.0.0.1:8000/api/info",{
-                
-                headers:{
-                    "Content-type":"application/json",
-                    "Authorization":`Bearer ${token}`
-                }
-
-            })
-
+    const data = await getUserInfo(token) //api call
             
-            const data = await res.json()
-
-            
-
-            if(res.ok){
-                setUser(data)
-            }
-            else{
-                setUser(null)
-            }
+    setUser(data)
             
         } catch (error) {
         console.error("Backend Error",error)
         alert("somethingh went wrong in profile")
+        setUser(null)
         }finally{
             setLoading(false)
         }
@@ -68,15 +52,7 @@ function Profile(){
         const token = localStorage.getItem("auth_token");
         if (!token) return;
 
-        const res = await fetch("http://127.0.0.1:8000/api/logout", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        const data = await res.json();
+        const data = await logoutUser(token) //api call
         alert(data.message); // better UX than console // "Logged out successfully."
 
         // remove token from localStorage and reset user

@@ -3,6 +3,8 @@ import ProductCard from "../components/ProductCard";
 import { FaShoppingCart } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { buildUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 function MyOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -14,7 +16,7 @@ function MyOrdersPage() {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("auth_token");
-        const res = await fetch("http://127.0.0.1:8000/api/user-orders-fku", {
+        const res = await fetch(api("/user-orders-fku"), {
           headers: { Authorization: `Bearer ${token}` },
         });
 

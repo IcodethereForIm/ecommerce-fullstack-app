@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getSectionsBySlug } from "../../services/SiteAssetService";
 
 function SlugSectionsPreview({ slug }) {
     
@@ -12,11 +13,7 @@ function SlugSectionsPreview({ slug }) {
 
     const fetchSections = async () => {
       try {
-        const res = await fetch(
-          `http://127.0.0.1:8000/api/site-assets/sections/${slug}`
-        );
-
-        const data = await res.json();
+        const data = await getSectionsBySlug(slug)
 
         setSections(data.section || []);
       } catch (err) {
@@ -25,7 +22,7 @@ function SlugSectionsPreview({ slug }) {
     };
 
     fetchSections();
-  }, 400); // ⏱️ wait 400ms after typing stops
+  }, 400); //  wait 400ms after typing stops
 
   return () => clearTimeout(delay); // cancel previous calls
 }, [slug]);

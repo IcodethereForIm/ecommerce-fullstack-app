@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { buildUrl } from "../config/api";
+import BASE_URL from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
@@ -26,7 +29,7 @@ const SearchBar = () => {
 
       const fetchResults = async () => {
         const res = await fetch(
-          `http://127.0.0.1:8000/api/search?q=${query}`
+          api(`/search?q=${query}`)
         );
         const data = await res.json();
         setResults(data);
@@ -85,7 +88,7 @@ const SearchBar = () => {
               <img
                 src={
                   item.thumbnail
-                    ? `http://127.0.0.1:8000/storage/${item.thumbnail}`
+                    ? `${BASE_URL}/storage/${item.thumbnail}`
                     : "/placeholder.png"
                 }
                 width="40"

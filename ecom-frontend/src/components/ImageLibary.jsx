@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { buildUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 function ImageLibrary() {
   const [image, setImage] = useState(null);
@@ -17,7 +19,7 @@ function ImageLibrary() {
     formData.append("alt_text", altText);
 
     try {
-      const res = await axios.post("http://127.0.0.1:8000/api/admin/images", formData, {
+      const res = await axios.post(api("/admin/images"), formData, {
         headers: {
           "Content-Type": "multipart/form-data","Authorization": `Bearer ${token}`,
         },

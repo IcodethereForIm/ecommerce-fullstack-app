@@ -1,6 +1,9 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { buildUrl } from "../config/api";
+import BASE_URL from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 const SearchPage = () => {
   const [params] = useSearchParams();
@@ -11,7 +14,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     const fetchResults = async () => {
-      const res = await fetch(`http://127.0.0.1:8000/api/search?q=${query}`);
+      const res = await fetch(api(`/search?q=${query}`));
       const data = await res.json();
       
       setResults(data);
@@ -30,7 +33,7 @@ const SearchPage = () => {
     <img
       src={
         item.thumbnail
-        ? `http://127.0.0.1:8000/storage/${item.thumbnail}`
+        ? `${BASE_URL}/storage/${item.thumbnail}`
         : "/placeholder.png"
   }
       alt={item.name}

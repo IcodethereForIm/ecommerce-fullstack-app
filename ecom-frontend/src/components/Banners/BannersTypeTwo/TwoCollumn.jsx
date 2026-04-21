@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./TwoCollumn.module.css";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { buildUrl } from "../../../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 function TwoColumnSection({ upperSection, bottomsSection, type, }) {
     const [upperImage, setUpperImage] = React.useState(null);
@@ -9,14 +11,14 @@ function TwoColumnSection({ upperSection, bottomsSection, type, }) {
     const {slug} = useParams()
 
     React.useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/site-assets/${upperSection?.section}/${type}/${upperSection?.asset_key}`)
+    fetch(api(`/site-assets/${upperSection?.section}/${type}/${upperSection?.asset_key}`))
       .then(res => res.json())
       .then(data => setUpperImage(data.data?.[0]?.image_url || null))
       .catch(err => console.error(err));
   }, [upperSection?.section, type,upperSection?.asset_key]);
 
   React.useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/site-assets/${bottomsSection?.section}/${type}/${bottomsSection?.asset_key}`)
+    fetch(api(`/site-assets/${bottomsSection?.section}/${type}/${bottomsSection?.asset_key}`))
       .then(res => res.json())
       .then(data => setBottomsImage(data.data?.[0]?.image_url || null))
       .catch(err => console.error(err));

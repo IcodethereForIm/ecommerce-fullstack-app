@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
+import { buildUrl } from "../config/api";
 import { useParams } from "react-router-dom"; // <-- import useParams
 import ProductCard from "../components/ProductCard";
 import { CartContext } from "../context/CartContext";
-import CategoryBanner from "../components/Category/CategoryBanner/CategoryBanner";
-import TwoColumnSection from "../components/Category/TwoCollumnSection/TwoCollumn";
+import CategoryBanner from "../components/Banners/BannersTypeTwo/CategoryBanner";
+import TwoColumnSection from "../components/Banners/BannersTypeTwo/TwoCollumn";
+import { getFilteredProducts } from "../services/ProductFilterService";
+import ProductScrollSection from "../components/ProductScrollSection";
 //import "./CategoryProducts.css";
+const api = (path) => buildUrl(`/api${path}`);
 
 const CategoryProducts = () => {
   const { slug } = useParams(); // <-- get category from URL
@@ -13,11 +17,12 @@ const CategoryProducts = () => {
   const [categoryName, setCategoryName] = useState("");
   const { addToCart } = useContext(CartContext);
   const [collection, setCollection] = useState(null);
+  
 
   useEffect(() => {
   const fetchCollection = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/collections/${slug}`);
+      const res = await fetch(api(`/collections/${slug}`));
       const data = await res.json();
       setCollection(data);
     } catch (err) {
@@ -37,40 +42,8 @@ const CategoryProducts = () => {
           if (comp.type !== "products") return null;
   
           try {
-            const source = comp.data?.source || {};
-  
-            let url = "http://127.0.0.1:8000/api/products";
-  
-            const params = new URLSearchParams();
-  
-            //  Gender
-            if (source.gender) {
-              params.append("gender", source.gender);
-            }
-  
-            //  Subcategory
-            if (source.subcategory) {
-              params.append("subcategory", source.subcategory);
-            }
-  
-            //  Product Type
-            if (source.type) {
-              params.append("type", source.type);
-            }
-  
-            if (comp.data?.limit) {
-              params.append("limit", comp.data.limit);
-            }
-  
-            // Attach query params
-            if ([...params].length) {
-              url += `?${params.toString()}`;
-            }
-  
+            const data = await getFilteredProducts(comp.data?.source,comp.data?.limit)
             
-  
-            const res = await fetch(url);
-            const data = await res.json();
   
             return { index, data };
   
@@ -110,20 +83,12 @@ const CategoryProducts = () => {
             return (<TwoColumnSection key={index} upperSection={comp.data?.left} bottomsSection={comp.data?.right} type={slug}/>)
           case "products" :
             return (
-              <div key={index} className="container-fluid px-0">
-          <h2 className="category-title">
-            {slug.toUpperCase()} PRODUCTS
-          </h2>
-
-          <div className="row g-2 mx-0">
-            {Array.isArray(products[index]) &&
-  products[index].map((product) => (
-    <div key={product.id} className="col-6 col-md-4 col-lg-3 px-1">
-      <ProductCard product={product} addToCart={addToCart} />
-    </div>
-))}
-          </div>
-        </div>
+              <ProductScrollSection
+              key={index}
+              products={products[index] || []}
+              addToCart={addToCart}
+              title={`${slug.toUpperCase()} PRODUCTS`}
+              />
             )
           default:
             return null;

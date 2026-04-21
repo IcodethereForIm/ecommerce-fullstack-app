@@ -1,5 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { createProduct } from "../../services/ProductServices"
 import CategoryDropdown from "./CategoryDropdown"
 import FetchProducts from "./FetchProducts"
 function ProductController(){
@@ -11,37 +12,10 @@ function ProductController(){
 
     const addProduct = async () => {
         const token = localStorage.getItem("auth_token");
-        const formData = new FormData();
-
-        formData.append("name", form.name);
-        formData.append("product_type", form.product_type);
-        formData.append("categoryId", form.categoryId);
-        formData.append("price", form.price);
-        formData.append("description", form.description);
-        formData.append("sku", form.sku);
-        formData.append("sale_price", form.sale_price);
-        formData.append("is_active", form.is_active ? 1 : 0);
-        formData.append("is_featured", form.is_featured ? 1 : 0);
-
-        for (let i = 0; i < form.images.length; i++) {
-            formData.append("images[]", form.images[i]);
-        }
-
-        form.sizes.forEach((item, index) => {
-            formData.append(`sizes[${index}][size]`, item.size);
-            formData.append(`sizes[${index}][stock]`, item.stock);
-        });
+        
 
         try {
-            await fetch("http://127.0.0.1:8000/api/admin/product", {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    },
-                credentials: "include",
-                body: formData
-            });
-
+            await createProduct(form,token)
             setForm(initialFormstate);
         } catch (error) {
             console.log("Backend ERROR", error);

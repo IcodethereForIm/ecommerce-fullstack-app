@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { buildUrl } from "../config/api";
 import ProductCard from "../components/ProductCard";
 import { CartContext } from "../context/CartContext";
-import Hero from "../components/Home/Hero";
+import Hero from "../components/Banners/BannersTypeOne/Hero";
+import { getFilteredProducts } from "../services/ProductFilterService";
+const api = (path) => buildUrl(`/api${path}`);
 
 function CollectionPage(){
     const { slug } = useParams();
@@ -13,7 +16,7 @@ function CollectionPage(){
       useEffect(() => {
         const fetchCollection = async () => {
           try {
-            const res = await fetch(`http://127.0.0.1:8000/api/collections/${slug}`);
+            const res = await fetch(api(`/collections/${slug}`));
             const data = await res.json();
             setCollection(data);
           } catch (err) {
@@ -31,40 +34,9 @@ function CollectionPage(){
         if (comp.type !== "products") return null;
 
         try {
-          const source = comp.data?.source || {};
-
-          let url = "http://127.0.0.1:8000/api/products";
-
-          const params = new URLSearchParams();
-
-          //  Gender
-          if (source.gender) {
-            params.append("gender", source.gender);
-          }
-
-          //  Subcategory
-          if (source.subcategory) {
-            params.append("subcategory", source.subcategory);
-          }
-
-          //  Product Type
-          if (source.type) {
-            params.append("type", source.type);
-          }
-
-          if (comp.data?.limit) {
-            params.append("limit", comp.data.limit);
-          }
-
-          // Attach query params
-          if ([...params].length) {
-            url += `?${params.toString()}`;
-          }
-
           
 
-          const res = await fetch(url);
-          const data = await res.json();
+          const data = await getFilteredProducts(comp.data?.source,comp.data?.limit)
 
           return { index, data };
 

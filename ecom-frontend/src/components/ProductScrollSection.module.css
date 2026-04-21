@@ -1,0 +1,34 @@
+.scrollContainer {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.cardWrapper {
+  width: clamp(460px, 22vw, 320px);
+  flex-shrink: 0;
+}
+
+.arrow {
+  position: absolute;
+  top: 40%;
+  z-index: 10;
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.arrow:hover {
+  opacity: 1;
+}
+
+.left {
+  left: 10px;
+}
+
+.right {
+  right: 10px;
+}

@@ -1,4 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
+import BASE_URL from "../config/api";
+import { buildUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 export const CartContext = createContext();
 
@@ -12,7 +15,7 @@ export const CartProvider = ({ children }) => {
       product.image ?? product.images?.[0]?.image_path ?? null;
 
     return primaryImage
-      ? `http://localhost:8000/storage/${primaryImage}`
+      ? `${BASE_URL}/storage/${primaryImage}`
       : null;
   };
 
@@ -52,7 +55,7 @@ export const CartProvider = ({ children }) => {
 
         if (guestCart.length > 0) {
           const res = await fetch(
-            "http://127.0.0.1:8000/api/cart/merge",
+            api("/cart/merge"),
             {
               method: "POST",
               headers: {
@@ -67,7 +70,7 @@ export const CartProvider = ({ children }) => {
           localStorage.removeItem("cart");
         } else {
           const res = await fetch(
-            "http://127.0.0.1:8000/api/cart",
+            api("/cart"),
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -123,7 +126,7 @@ export const CartProvider = ({ children }) => {
     // Logged-in
     try {
       const res = await fetch(
-        "http://127.0.0.1:8000/api/cart/add",
+        api("/cart/add"),
         {
           method: "POST",
           headers: {
@@ -166,7 +169,7 @@ export const CartProvider = ({ children }) => {
     // Logged-in
     try {
       await fetch(
-        `http://127.0.0.1:8000/api/cart/remove/${id}/${size}`,
+        api(`/cart/remove/${id}/${size}`),
         {
           method: "DELETE",
           headers: {
@@ -212,7 +215,7 @@ export const CartProvider = ({ children }) => {
       );
 
       const res = await fetch(
-        `http://127.0.0.1:8000/api/cart/update/${id}/${size}`,
+        api(`/cart/update/${id}/${size}`),
         {
           method: "PUT",
           headers: {
@@ -261,7 +264,7 @@ export const CartProvider = ({ children }) => {
       );
 
       const res = await fetch(
-        `http://127.0.0.1:8000/api/cart/update/${id}/${size}`,
+        api(`/cart/update/${id}/${size}`),
         {
           method: "PUT",
           headers: {

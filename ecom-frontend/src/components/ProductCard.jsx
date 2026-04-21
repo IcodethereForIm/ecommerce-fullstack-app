@@ -2,26 +2,35 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useWishlist } from "../context/WishListContext";
+import { useAuth } from "../context/AuthContext";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styles from "./Card.module.css";
+import { buildUrl,buildStorageUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
+
 
 const ProductCard = ({ product, addToCart }) => {
   const  navigate = useNavigate();
+  const {token} = useAuth()
+  const { toggleWishlist, isWishlisted } = useWishlist();
   const [fullProduct, setFullProduct] = React.useState(null);
   const [selectedSize, setSelectedSize] = React.useState(null);
   const [quantity, setQuantity] = React.useState(1);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const liked = isWishlisted(product.id);
+
   const getImageUrls = (img) => {
   return img?.image_path
-  ? `http://127.0.0.1:8000/storage/${img.image_path}`
+  ? buildStorageUrl(img.image_path)
   : "/placeholder.jpg";
   };
 
   const getPrimaryImage = (product) => {
-    //const primary = product.images?.find(img => img.is_primary) || product.images?.[0];
-    //return primary ? `http://127.0.0.1:8000/storage/${primary.image_path}` : "https://via.placeholder.com/300";
+    
     return product.thumbnail
-    ? `http://127.0.0.1:8000/storage/${product.thumbnail}`
+    ? buildStorageUrl(product.thumbnail)
     : "https://via.placeholder.com/300";
   };
   
@@ -30,7 +39,7 @@ const ProductCard = ({ product, addToCart }) => {
     setDrawerOpen(true);
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/products/${product.id}`);
+      const res = await fetch(api(`/products/${product.id}`));
       const data = await res.json();
       setFullProduct(data);
     } catch (err) {
@@ -45,6 +54,20 @@ const ProductCard = ({ product, addToCart }) => {
           <div className={styles.productCard}>
             <div className={styles.cardImage}>
               <img src={getPrimaryImage(product)} alt={product.name} />
+              {/* ❤️ Wishlist button */}
+              <button
+              className={`${styles.wishlistBtn} ${liked ? styles.wishlistBtnActive : ""}`}
+              onClick={(e) => {
+              e.preventDefault(); 
+              if (!token) {
+              navigate("/account"); 
+              return;
+              }
+              toggleWishlist(product);
+            }}
+              >
+            {liked ? <FaHeart color="red" /> : <FaRegHeart />}
+            </button>
               <button className={styles.addToCartBtn} onClick={handleOpenDrawer}>
                 Add to Cart
               </button>

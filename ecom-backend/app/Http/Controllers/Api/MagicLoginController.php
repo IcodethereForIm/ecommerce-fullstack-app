@@ -21,7 +21,14 @@ class MagicLoginController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
-            // check if email is verified
+            //check admin
+            if ($user->role === 'admin') {
+            return response()->json([
+            'is_admin' => true,
+            'message' => 'Admin detected. Redirect to admin login.',
+        ]);
+    }
+            // check if email is verified normal user
             if (!$user->hasVerifiedEmail()) {
                 return response()->json([
                     'exists' => true,

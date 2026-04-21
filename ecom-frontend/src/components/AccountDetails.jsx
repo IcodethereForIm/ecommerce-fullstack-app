@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { buildUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 const AccountDetails = ({ user }) => {
     const token = localStorage.getItem("auth_token")
@@ -12,7 +13,7 @@ const AccountDetails = ({ user }) => {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/shipping-addresses",{
+      const res = await axios.get(api("/shipping-addresses"),{
         headers: {
           Authorization: `Bearer ${token}`,
         },

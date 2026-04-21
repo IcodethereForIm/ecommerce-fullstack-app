@@ -17,6 +17,7 @@ class OrderController extends Controller
     public function createOrder(){
         try{
         $user = Auth::user();
+        
 
         $cartItems = CartItem::with('product')
         ->where('user_id', $user->id)

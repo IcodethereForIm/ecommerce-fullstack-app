@@ -1,5 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { buildStorageUrl } from "../../config/api";
+import { getProductById,updateProductById } from "../../services/ProductServices";
 import CategoryDropdown from "./CategoryDropdown";
 
 function EditProduct() {
@@ -26,8 +28,7 @@ function EditProduct() {
     React.useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/products/${id}`);
-                const data = await res.json();
+                const data = await getProductById(id) //api call
 
                 setForm({
                     name: data.name || "",
@@ -56,31 +57,10 @@ function EditProduct() {
     // Update product
     const updateProduct = async () => {
         const token = localStorage.getItem("auth_token");
-        const formData = new FormData();
-
-        // send only fields (PATCH safe)
-        formData.append("name", form.name);
-        formData.append("categoryId", form.categoryId);
-        formData.append("product_type", form.product_type);
-        formData.append("price", form.price);
-        formData.append("sale_price", form.sale_price);
-        formData.append("sku", form.sku);
-        formData.append("description", form.description);
-        formData.append("is_active", form.is_active ? 1 : 0);
-        formData.append("is_featured", form.is_featured ? 1 : 0);
-
-        form.images.forEach((img) => {
-            formData.append("images[]", img);
-        });
+        
 
         try {
-            await fetch(`http://127.0.0.1:8000/api/admin/products/${id}`, {
-                method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    },
-                body: formData
-            });
+            await updateProductById(id,form,token) //api call
 
             alert("Product updated!");
             navigate("/admin"); // redirect
@@ -147,7 +127,7 @@ function EditProduct() {
                     {existingImages.map((img, i) => (
                         <img
                             key={i}
-                            src={`http://127.0.0.1:8000/storage/${img.image_path}`}
+                            src={buildStorageUrl(img.image_path)}
                             width="80"
                             alt=""
                         />

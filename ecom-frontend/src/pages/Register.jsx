@@ -1,4 +1,6 @@
 import React from "react";
+import { buildUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 function Register(){
 
@@ -13,7 +15,7 @@ function Register(){
         const handleSubmit = async(e)=>{
         e.preventDefault()
         try {
-        const res = await fetch("http://127.0.0.1:8000/api/register",
+        const res = await fetch(api("/register"),
             {
                 method:"POST",
                 credentials:"include",

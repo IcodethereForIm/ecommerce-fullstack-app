@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import ShippingAddress from "../components/ShippingAdresses";
+import { buildUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 
 
@@ -33,7 +35,7 @@ function Checkout() {
 
   // Fetch authenticated user info
   const fetchUser = async () => {
-    const res = await fetch("http://127.0.0.1:8000/api/info", {
+    const res = await fetch(api("/info"), {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error("Failed to fetch user info");
@@ -56,8 +58,15 @@ function Checkout() {
         return;
       }
 
+      const orderData = {
+  items: cartItems,
+  total: total,
+};
+
+console.log("Sending order:", orderData);
+
       // Create order on backend
-      const res = await fetch("http://127.0.0.1:8000/api/create-order", {
+      const res = await fetch(api("/create-order"), {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -88,7 +97,7 @@ function Checkout() {
 
           // Verify payment on backend
           const verifyRes = await fetch(
-            "http://127.0.0.1:8000/api/verify-payment",
+            api("/verify-payment"),
             {
               method: "POST",
               headers: {
@@ -129,6 +138,7 @@ function Checkout() {
           <p>
             {item.name} × {item.quantity} = ₹{item.price * item.quantity}
           </p>
+          <img src={item.image} alt={item.name} width="80" style={{ border: "1px solid red" }} />
         </div>
       ))}
 

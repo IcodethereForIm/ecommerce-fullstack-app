@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getProducts,deleteProductById } from "../../services/ProductServices";
+import { buildStorageUrl } from "../../config/api";
 
 function FetchProducts() {
     const [products, setProducts] = React.useState([]);
@@ -7,8 +9,7 @@ function FetchProducts() {
     // fetch products
     const fetchProducts = async () => {
         try {
-            const res = await fetch("http://127.0.0.1:8000/api/products");
-            const data = await res.json();
+            const data = await getProducts()
             setProducts(data);
         } catch (err) {
             console.log("Error fetching products", err);
@@ -25,13 +26,7 @@ function FetchProducts() {
         const token = localStorage.getItem("auth_token");
 
         try {
-            await fetch(`http://127.0.0.1:8000/api/admin/products/${id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    },
-            });
-
+            await deleteProductById(id,token)
             // update UI
             setProducts(products.filter(p => p.id !== id));
 
@@ -60,7 +55,7 @@ function FetchProducts() {
                        <div className="d-flex align-items-center gap-3">
     
     <img
-        src={`http://127.0.0.1:8000/storage/${product.thumbnail}`}
+        src={buildStorageUrl(product.thumbnail)}
         alt={product.name}
         width="50"
         height="50"

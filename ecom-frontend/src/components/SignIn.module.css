@@ -1,15 +1,17 @@
-.Sign-in {
+/* SignIn.module.css */
+
+.wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh; /* center vertically */
-  background-color: #f5f5f5; /* subtle page background */
+  min-height: 80vh;
+  background-color: #f5f5f5;
 }
 
-.Sign-in form {
+.form {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* space between inputs */
+  gap: 1rem;
   background-color: #fff;
   padding: 2rem;
   border-radius: 8px;
@@ -17,7 +19,13 @@
   width: 300px;
 }
 
-.Sign-in input {
+.title {
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+.input {
   padding: 0.75rem 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -26,11 +34,11 @@
   transition: border-color 0.3s;
 }
 
-.Sign-in input:focus {
-  border-color: #007bff; /* highlight on focus */
+.input:focus {
+  border-color: #007bff;
 }
 
-.Sign-in button {
+.button {
   padding: 0.75rem 1rem;
   font-size: 1rem;
   font-weight: 600;
@@ -42,7 +50,7 @@
   transition: background-color 0.3s, transform 0.2s;
 }
 
-.Sign-in button:hover {
+.button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
 }

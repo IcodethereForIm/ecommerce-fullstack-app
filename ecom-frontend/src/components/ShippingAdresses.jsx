@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { buildUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 const ShippingAddress = () => {
     const token = localStorage.getItem("auth_token")
@@ -19,7 +21,7 @@ const ShippingAddress = () => {
   //  Fetch addresses
   const fetchAddresses = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/shipping-addresses",{
+      const res = await axios.get(api("/shipping-addresses"),{
         headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -40,7 +42,7 @@ const ShippingAddress = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/shipping-addresses", form,
+      await axios.post(api("/shipping-addresses"), form,
         {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -67,7 +69,7 @@ const ShippingAddress = () => {
   //  Set default
   const setDefault = async (id) => {
     try {
-      await axios.post(`http://127.0.0.1:8000/api/shipping-addresses/${id}/default`, {},{
+      await axios.post(api(`/shipping-addresses/${id}/default`), {},{
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +84,7 @@ const ShippingAddress = () => {
   //  Delete
   const deleteAddress = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/shipping-addresses/${id}`, {
+      await axios.delete(api(`/shipping-addresses/${id}`), {
         headers: {
           Authorization: `Bearer ${token}`,
         },

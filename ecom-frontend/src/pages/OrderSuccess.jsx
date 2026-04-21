@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-
+import { buildUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 function OrderSuccessPage() {
   const { orderId } = useParams(); // order ID from URL
@@ -13,7 +14,7 @@ function OrderSuccessPage() {
     const fetchOrder = async () => {
       try {
         const token = localStorage.getItem("auth_token");
-        const res = await fetch(`http://127.0.0.1:8000/api/orders/${orderId}`, {
+        const res = await fetch(api(`/orders/${orderId}`), {
           headers: { Authorization: `Bearer ${token}` },
         });
 

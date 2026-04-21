@@ -21,6 +21,7 @@ import EditProduct from "./components/Admin/EditProduct"
 import CollectionPage from "./pages/Collections"
 import SearchPage from "./pages/SearchPage"
 import Footer from "./components/Footer"
+import Wishlist from "./pages/WishList"
 
 
 
@@ -42,6 +43,7 @@ function App() {
         <Route path="/category/:slug" element={<CategoryProducts/>}/>
         <Route path="/collections/:slug" element={<CollectionPage/>}/>
         <Route path="/product/:id" element={<ProductDetails/>}/>
+        <Route path="/liked" element={<Wishlist/>}/>
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/account" element={<LoginSignup/>}/>
         <Route path="/checkout" element={<Checkout/>}/>

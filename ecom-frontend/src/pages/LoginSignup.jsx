@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import { FaUserAlt } from "react-icons/fa"; // profile icon
+import { magicLogin } from "../services/AuthService";
+
 import Profile from "./Profile";
 
 function LoginSignup() {
@@ -19,19 +20,12 @@ function LoginSignup() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/magic-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: input }),
-        credentials: "include",
-      });
+      
+      const data = await magicLogin(input) // api call
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.message || "Something went wrong!");
-        setLoading(false);
-        return;
+      if (data.is_admin) {
+      navigate("/signin");
+      return;
       }
 
       // Store token

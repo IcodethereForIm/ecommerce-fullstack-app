@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+//import { getCategories,createCategory,deleteCategory } from "./Services/AdminServices";
+import { getCategories,createCategory,deleteCategory } from "../../services/ProductCategoryService";
 
 function CategoryAdmin() {
   
@@ -8,8 +10,8 @@ function CategoryAdmin() {
 
   // Fetch categories from backend
   const fetchCategories = async () => {
-    const res = await fetch("http://127.0.0.1:8000/api/categories");
-    const data = await res.json();
+    
+    const data = await getCategories()
     setCategories(data);
   };
 
@@ -21,11 +23,8 @@ function CategoryAdmin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("auth_token");
-    await fetch("http://127.0.0.1:8000/api/admin/categories", {
-      method: "POST",
-      headers: { "Content-Type": "application/json","Authorization": `Bearer ${token}`, },
-      body: JSON.stringify({ name, parent_id: parentId || null }),
-    });
+    
+    await createCategory({ name, parent_id: parentId || null },token)
 
     setName("");
     setParentId("");
@@ -36,9 +35,8 @@ function CategoryAdmin() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this category?")) return;
     const token = localStorage.getItem("auth_token");
-    await fetch(`http://127.0.0.1:8000/api/admin/categories/${id}`, { method: "DELETE",headers: {
-      "Authorization": `Bearer ${token}`,
-    }, },);
+    
+    await deleteCategory(id,token)
     fetchCategories(); // refresh category list
   };
 

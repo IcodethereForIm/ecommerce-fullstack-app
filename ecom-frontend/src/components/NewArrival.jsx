@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight, FaShoppingCart } from "react-icons/fa";
 import { CartContext } from "../context/CartContext";
 import styles from "./NewArrival.module.css";
+import { buildUrl,buildStorageUrl } from "../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 function NewArrivals() {
   const [products, setProducts] = useState([]);
@@ -11,7 +13,7 @@ function NewArrivals() {
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/products/latest")
+    fetch(api("/products/latest"))
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.log(err));
@@ -22,7 +24,7 @@ function NewArrivals() {
       product.images?.find((img) => img.is_primary) || product.images?.[0];
 
     return primary
-      ? `http://127.0.0.1:8000/storage/${primary.image_path}`
+      ? buildStorageUrl(primary.image_path)
       : "https://via.placeholder.com/300";
   };
 

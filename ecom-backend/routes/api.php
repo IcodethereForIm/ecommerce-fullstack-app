@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CollectionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Api\ShippingAddressController;
+use App\Http\Controllers\Api\WishlistController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\OrderController;
@@ -136,4 +137,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/shipping-addresses/{id}', [ShippingAddressController::class, 'update']);
     Route::delete('/shipping-addresses/{id}', [ShippingAddressController::class, 'destroy']);
     Route::post('/shipping-addresses/{id}/default', [ShippingAddressController::class, 'setDefault']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    
+    
+    Route::post('/wishlist/{productId}', [WishlistController::class, 'toggle']);
+
+    
+    Route::get('/wishlist', [WishlistController::class, 'index']);
+
+    
+    Route::delete('/wishlist/{productId}', [WishlistController::class, 'remove']);
 });

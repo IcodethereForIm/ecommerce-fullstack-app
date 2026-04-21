@@ -1,5 +1,7 @@
 import React, { useState, useEffect} from "react";
 import axios from "axios";
+import { buildUrl } from "../../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 import FetchCollection from "./FetchCollection";
 import SlugSectionsPreview from "./SiteAssetShow";
 
@@ -87,7 +89,7 @@ const AdminCollectionForm = ({ existingCollection }) => {
         is_active: isActive,
         components
       };
-      const res = await axios.post("http://127.0.0.1:8000/api/admin/collections/save", payload,
+      const res = await axios.post(api("/admin/collections/save"), payload,
         {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
+//import { getCategories } from "./Services/AdminServices";
+import { getCategories } from "../../services/ProductCategoryService";
 
 function CategoryDropdown({ value, onChange }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/categories")
-      .then(res => res.json())
-      .then(data => setCategories(data));
+    const loadCategories = async () => {
+      try {
+        const data = await getCategories(); // Service Api call
+        setCategories(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadCategories();
   }, []);
 
   return (

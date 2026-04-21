@@ -1,7 +1,10 @@
 import React from "react";
+import BASE_URL from "../config/api";
+import { buildUrl } from "../config/api";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import ProductCard from "../components/ProductCard";
+const api = (path) => buildUrl(`/api${path}`);
 
 function ProductDetails() {
   const navigate = useNavigate();
@@ -21,14 +24,14 @@ function ProductDetails() {
   React.useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/products/${id}`);
+        const res = await fetch(api(`/products/${id}`));
         const data = await res.json();
 
         setProduct(data);
         setMainImage(data?.images?.[0]?.image_path || null);
 
         const relateRes = await fetch(
-          "http://127.0.0.1:8000/api/products"
+          api("/products")
         );
         const releateData = await relateRes.json();
 
@@ -50,7 +53,7 @@ function ProductDetails() {
           <div className="col-md-6">
             {mainImage ? (
               <img
-                src={`http://127.0.0.1:8000/storage/${mainImage}`}
+                src={`${BASE_URL}/storage/${mainImage}`}
                 className="img-fluid mb-2 main-img"
                 alt={product?.name}
               />
@@ -66,7 +69,7 @@ function ProductDetails() {
               {product?.images?.map((img, idx) => (
                 <img
                   key={idx}
-                  src={`http://127.0.0.1:8000/storage/${img.image_path}`}
+                  src={`${BASE_URL}/storage/${img.image_path}`}
                   className="img-thumbnail me-2"
                   style={{ width: "80px", cursor: "pointer" }}
                   onClick={() => setMainImage(img.image_path)}

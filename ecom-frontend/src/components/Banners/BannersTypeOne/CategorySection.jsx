@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./CategorySection.module.css"
+import { buildUrl } from "../../../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 function CategorySection({menSection,womenSection,type}) {
   const navigate = useNavigate();
@@ -8,14 +10,14 @@ function CategorySection({menSection,womenSection,type}) {
   const [woMenSectionImage, setWoMenSectionImage] = React.useState(null);
 
   React.useEffect(() => {
-      fetch(`http://127.0.0.1:8000/api/site-assets/${menSection?.section}/${type}/${menSection.asset_key}`)
+      fetch(api(`/site-assets/${menSection?.section}/${type}/${menSection.asset_key}`))
         .then(res => res.json())
         .then(data => setMenSectionImage(data.data?.[0]?.image_url || null))
         .catch(err => console.error(err));
     }, [menSection?.section, menSection?.asset_key, type]);
   
     React.useEffect(() => {
-      fetch(`http://127.0.0.1:8000/api/site-assets/${womenSection?.section}/${type}/${womenSection.asset_key}`)
+      fetch(api(`/site-assets/${womenSection?.section}/${type}/${womenSection.asset_key}`))
         .then(res => res.json())
         .then(data => setWoMenSectionImage(data.data?.[0]?.image_url || null))
         .catch(err => console.error(err));

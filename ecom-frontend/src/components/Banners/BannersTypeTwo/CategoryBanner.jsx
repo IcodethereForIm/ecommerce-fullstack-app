@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CategoryBanner.module.css";
 import { useNavigate } from "react-router-dom";
+import { buildUrl } from "../../../config/api";
+const api = (path) => buildUrl(`/api${path}`);
 
 function CategoryBanner({ section, type, assetKey }) {
   const [banners, setBanners] = useState([]);
@@ -11,7 +13,7 @@ function CategoryBanner({ section, type, assetKey }) {
   // 🔹 Fetch images
   useEffect(() => {
     setLoading(true); // start loading when section/type changes
-    fetch(`http://127.0.0.1:8000/api/site-assets/${section?.section}/${type}/${assetKey}`)
+    fetch(api(`/site-assets/${section?.section}/${type}/${assetKey}`))
       .then((res) => res.json())
       .then((data) => {
         const bannerData = data.data || [];

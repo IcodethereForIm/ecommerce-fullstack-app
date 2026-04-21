@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getImages,getAssets,uploadSiteAsset,deleteSiteAsset } from "../../services/SiteAssetService";
+import { buildStorageUrl } from "../../config/api";
 
 function SiteAset() {
   const [section, setSection] = useState("");
@@ -17,8 +19,7 @@ function SiteAset() {
 
   const fetchImages = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/images");
-      const data = await res.json();
+      const data = await getImages()
       setImages(data);
     } catch (err) {
       console.error(err);
@@ -29,11 +30,8 @@ function SiteAset() {
   const fetchAssets = async () => {
     if (!section || !key) return;
     try {
-      const res = await fetch(
-        `http://127.0.0.1:8000/api/site-assets/${section}/${key}`
-      );
-      const data = await res.json();
       
+      const data = await getAssets(section,key)
       setAssets(data);
     } catch (err) {
       console.error(err);
@@ -53,26 +51,8 @@ function SiteAset() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("section", section);
-    formData.append("key", key);
-    formData.append("asset_key", assetKey);
-
-    selectedImages.forEach((img, index) => {
-      formData.append(`image_ids[${index}]`, img.id);
-    });
-
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/admin/site-assets", {
-        method: "POST",
-        headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-        body: formData,
-      });
-
-      if (!res.ok) throw new Error("Upload failed");
-
+       await uploadSiteAsset({section,key,assetKey,selectedImages},token)
       alert("Assets uploaded successfully ✅");
       setSelectedImages([]);
       fetchAssets();
@@ -89,18 +69,8 @@ function SiteAset() {
   if (!window.confirm("Delete this asset?")) return;
 
   try {
-    const res = await fetch(
-      `http://127.0.0.1:8000/api/admin/site-assets/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!res.ok) throw new Error("Delete failed");
-
+    await deleteSiteAsset(id,token)
+ 
     //UI update 
     setAssets((prev) => {
       const updated = { ...prev };
@@ -194,7 +164,7 @@ function SiteAset() {
             {selectedImages.map((img) => (
               <img
                 key={img.id}
-                src={`http://127.0.0.1:8000/storage/${img.file_path}`}
+                src={buildStorageUrl(img.file_path)}
                 alt=""
                 width="80"
                 style={{ border: "2px solid green" }}
@@ -224,7 +194,7 @@ function SiteAset() {
                     <div key={asset.id} className="position-relative">
     
     <img
-      src={`http://127.0.0.1:8000/storage/${asset.image.file_path}`}
+      src={buildStorageUrl(asset.image.file_path)}
       alt={asset.image.alt_text || ""}
       width="80"
       className="rounded border"
@@ -261,7 +231,7 @@ function SiteAset() {
             {images.map((img) => (
               <div className="col-md-3 mb-3" key={img.id}>
                 <img
-                  src={`http://127.0.0.1:8000/storage/${img.file_path}`}
+                  src={buildStorageUrl(img.file_path)}
                   alt=""
                   className="img-fluid"
                   style={{ cursor: "pointer" }}

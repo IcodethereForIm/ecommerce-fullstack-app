@@ -1,9 +1,11 @@
 import React from "react"
 import { useParams } from "react-router-dom"
-import Hero from "../components/Home/Hero"
-import CategorySection from "../components/CategorySection"
-import PromoBanner from "../components/PromoBanner"
+import { buildUrl } from "../config/api"
+import Hero from "../components/Banners/BannersTypeOne/Hero"
+import CategorySection from "../components/Banners/BannersTypeOne/CategorySection"
+import PromoBanner from "../components/Banners/PromoBanner"
 import NewArrivals from "../components/NewArrival"
+const api = (path) => buildUrl(`/api${path}`);
 function Home(){
         const slug = "home"
         const [collection, setCollection] = React.useState(null);
@@ -11,7 +13,7 @@ function Home(){
         React.useEffect(() => {
           const fetchCollection = async () => {
             try {
-              const res = await fetch(`http://127.0.0.1:8000/api/collections/${slug}`);
+              const res = await fetch(api(`/collections/${slug}`));
               const data = await res.json();
               setCollection(data);
             } catch (err) {
