@@ -23,6 +23,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
