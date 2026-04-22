@@ -1,13 +1,13 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
-# Install system dependencies
+# System dependencies
 RUN apt-get update && apt-get install -y \
     git curl unzip libzip-dev
 
-# Install PHP extensions
+# PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql zip
 
-# Install Composer
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
@@ -16,11 +16,13 @@ WORKDIR /var/www
 COPY . .
 
 # Install dependencies
-RUN composer install --no-interaction --prefer-dist
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Permissions
+# Permissions (important for Laravel)
 RUN chmod -R 775 storage bootstrap/cache
 
+# Expose Railway port
 EXPOSE 10000
 
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# Start PHP built-in server pointing to public folder
+CMD php -S 0.0.0.0:10000 -t public
