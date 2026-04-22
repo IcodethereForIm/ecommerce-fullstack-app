@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Log;
 
 
 Route::get('/health', function () {
-    return response()->json(['status' => 'ok']);
+    return response()->json(['status' => 'ok you are good to goo']);
 });
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
