@@ -25,4 +25,4 @@ RUN chmod -R 775 storage bootstrap/cache
 EXPOSE 10000
 
 # Start PHP built-in server pointing to public folder
-CMD php -S 0.0.0.0:10000 -t public
+CMD php artisan storage:link || true && php -S 0.0.0.0:10000 -t public
