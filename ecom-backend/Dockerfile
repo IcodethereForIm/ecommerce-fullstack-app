@@ -18,11 +18,10 @@ COPY . .
 # Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Permissions (important for Laravel)
+# Permissions
 RUN chmod -R 775 storage bootstrap/cache
 
-# Expose Railway port
 EXPOSE 10000
 
-# Start PHP built-in server pointing to public folder
-CMD php artisan storage:link || true && php -S 0.0.0.0:10000 -t public
+# IMPORTANT: proper Laravel runtime
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
