@@ -32,6 +32,7 @@ const ProductCard = ({ product, addToCart }) => {
     return product.thumbnail
     ? buildStorageUrl(product.thumbnail)
     : "https://via.placeholder.com/300";
+    
   };
   
   const handleOpenDrawer = async (e) => {

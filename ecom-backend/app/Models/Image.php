@@ -11,6 +11,7 @@ class Image extends Model
     //
     protected $fillable = [
         'file_path',
+        'public_id',
         'alt_text'
     ];
 

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { buildUrl } from "../config/api";
-import BASE_URL from "../config/api";
+import { buildUrl,buildStorageUrl } from "../config/api";
 const api = (path) => buildUrl(`/api${path}`);
 
 const SearchBar = () => {
@@ -88,7 +87,7 @@ const SearchBar = () => {
               <img
                 src={
                   item.thumbnail
-                    ? `${BASE_URL}/storage/${item.thumbnail}`
+                    ? buildStorageUrl(item.thumbnail)
                     : "/placeholder.png"
                 }
                 width="40"

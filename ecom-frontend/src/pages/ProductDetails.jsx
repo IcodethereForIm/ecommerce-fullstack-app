@@ -1,6 +1,5 @@
 import React from "react";
-import BASE_URL from "../config/api";
-import { buildUrl } from "../config/api";
+import { buildUrl,buildStorageUrl } from "../config/api";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import ProductCard from "../components/ProductCard";
@@ -53,7 +52,7 @@ function ProductDetails() {
           <div className="col-md-6">
             {mainImage ? (
               <img
-                src={`${BASE_URL}/storage/${mainImage}`}
+                src={buildStorageUrl(mainImage)}
                 className="img-fluid mb-2 main-img"
                 alt={product?.name}
               />
@@ -69,7 +68,7 @@ function ProductDetails() {
               {product?.images?.map((img, idx) => (
                 <img
                   key={idx}
-                  src={`${BASE_URL}/storage/${img.image_path}`}
+                  src={buildStorageUrl(img.image_path)}
                   className="img-thumbnail me-2"
                   style={{ width: "80px", cursor: "pointer" }}
                   onClick={() => setMainImage(img.image_path)}

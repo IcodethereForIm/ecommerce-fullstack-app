@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight, FaShoppingCart } from "react-icons/fa";
 import { CartContext } from "../context/CartContext";
 import styles from "./NewArrival.module.css";
+import ProductCard from "./ProductCard";
 import { buildUrl,buildStorageUrl } from "../config/api";
 const api = (path) => buildUrl(`/api${path}`);
 
@@ -45,74 +46,17 @@ function NewArrivals() {
         {/* Scroll Container */}
         <div className={`${styles.scrollcontainer} d-flex gap-3 pb-3`} ref={scrollRef}>
           {products.map((product) => (
-            <div style={{ minWidth: "420px",marginRight: "16px" }} key={product.id}>
-  <Link
-    to={`/product/${product.id}`}
-    style={{ textDecoration: "none", color: "inherit" }}
-  >
-    <div className={`card h-100 shadow-sm ${styles.productCard}`}>
-  {/* IMAGE SECTION */}
-  <div className={styles.cardimage} style={{ height: "600px" }}>
-    <img
-      src={getPrimaryImage(product)}
-      alt={product.name}
-    />
-    {/* Add to Cart button inside image container */}
-    <button
-      className={styles.addToCartBn}
-      onClick={(e) => {
-        e.preventDefault(); // stop navigation
-        setSelectedProduct(product); // open drawer
-      }}
-    >
-      Add to Cart
-    </button>
-  </div>
-
-  {/* INFO SECTION */}
-  <div className={styles.cardinfo}>
-    <h5>{product.name}</h5>
-    <p>₹{product.price}</p>
-  </div>
-</div>
-  </Link>
+            <div style={{ minWidth: "470px",marginRight: "16px" }} key={product.id}>
+              <ProductCard
+              product={product}
+              addToCart={addToCart}
+              />
+  
 </div>
           ))}
         </div>
       </div>
 
-      {/* Side Drawer */}
-      {selectedProduct && (
-        <>
-          {/* Overlay */}
-          <div className={styles.overlay} onClick={() => setSelectedProduct(null)}></div>
-
-          {/* Drawer Panel */}
-          <div className={styles.sidepanel} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closebtn} onClick={() => setSelectedProduct(null)}>✕</button>
-
-            <img
-              src={getPrimaryImage(selectedProduct)}
-              style={{ width: "100%", borderRadius: "10px" }}
-              alt={selectedProduct.name}
-            />
-            <h3 className="mt-3">{selectedProduct.name}</h3>
-            <p>₹{selectedProduct.price}</p>
-
-            <button
-              className="btn btn-dark w-100 mt-3"
-              onClick={() => {
-                addToCart(selectedProduct);  // Add to cart
-                setSelectedProduct(null);    // Close drawer
-              }}
-            >
-              <FaShoppingCart className="me-2" />
-              Add to Cart
-              Buy now
-            </button>
-          </div>
-        </>
-      )}
     </div>
   );
 }

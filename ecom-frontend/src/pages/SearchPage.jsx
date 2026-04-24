@@ -1,8 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { buildUrl } from "../config/api";
-import BASE_URL from "../config/api";
+import { buildUrl,buildStorageUrl } from "../config/api";
 const api = (path) => buildUrl(`/api${path}`);
 
 const SearchPage = () => {
@@ -33,7 +32,7 @@ const SearchPage = () => {
     <img
       src={
         item.thumbnail
-        ? `${BASE_URL}/storage/${item.thumbnail}`
+        ? buildStorageUrl(item.thumbnail)
         : "/placeholder.png"
   }
       alt={item.name}

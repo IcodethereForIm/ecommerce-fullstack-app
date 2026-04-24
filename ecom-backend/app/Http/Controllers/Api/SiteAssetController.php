@@ -58,7 +58,7 @@ class SiteAssetController extends Controller
         ->map(function ($item) {
             return [
                 'id' => $item->id,
-                'image_url' => asset('storage/' . $item->image->file_path),
+                'image_url' => $item->image->file_path,
                 'position' => $item->position
             ];
         });

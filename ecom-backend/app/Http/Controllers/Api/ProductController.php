@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
- use Illuminate\Support\Facades\Storage;
+ //use Illuminate\Support\Facades\Storage;
  use Illuminate\Support\Facades\DB;
+ use Cloudinary\Api\Upload\UploadApi;
 
 class ProductController extends Controller
 {
@@ -67,17 +68,22 @@ class ProductController extends Controller
         $isFirst = true;
 
         foreach ($request->file("images") as $img) {
-            $path = $img->store("products", "public");
+            //$path = $img->store("products", "public");
+            $uploaded = (new UploadApi())->upload(
+                    $img->getRealPath(),
+                    ['folder' => 'products']
+            );
 
             $product->images()->create([
-                'image_path' => $path,
-                'is_primary' => $isFirst, // first image primary
+                'image_path' => $uploaded['secure_url'],
+                'public_id'  => $uploaded['public_id'],
+                'is_primary' => $isFirst,
             ]);
 
             // thumbnail > first image
             if ($isFirst) {
-                $product->thumbnail = $path;
-                $isFirst = false;
+            $product->thumbnail = $uploaded['secure_url'];
+            $isFirst = false;
             }
         }
 
@@ -241,24 +247,32 @@ public function updatePartial(Request $request, $id)
 
             
             foreach ($product->images as $img) {
-                Storage::disk('public')->delete($img->image_path);
-                $img->delete();
+                if ($img->public_id) {
+                (new UploadApi())->destroy($img->public_id);
+                }
+                    $img->delete();
             }
 
             
             $isFirst = true;
 
             foreach ($request->file("images") as $img) {
-                $path = $img->store("products", "public");
+                //$path = $img->store("products", "public");
+                $uploaded = (new UploadApi())->upload(
+                    $img->getRealPath(),
+                    ['folder' => 'products']
+                );
+
 
                 $product->images()->create([
-                    'image_path' => $path,
-                    'is_primary' => $isFirst,
+                'image_path' => $uploaded['secure_url'],
+                'public_id'  => $uploaded['public_id'],
+                'is_primary' => $isFirst,
                 ]);
 
                 if ($isFirst) {
-                    $product->thumbnail = $path;
-                    $isFirst = false;
+                $product->thumbnail = $uploaded['secure_url'];
+                $isFirst = false;
                 }
             }
 
@@ -279,7 +293,9 @@ public function destroy($id)
 
         
         foreach ($product->images as $img) {
-            Storage::disk('public')->delete($img->image_path);
+            if ($img->public_id) {
+                (new UploadApi())->destroy($img->public_id);
+            }
             $img->delete();
         }
 

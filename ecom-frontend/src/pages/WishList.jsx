@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useWishlist } from "../context/WishListContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import BASE_URL from "../config/api";
+import { buildStorageUrl } from "../config/api";
 
 const Wishlist = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
@@ -33,7 +33,7 @@ const Wishlist = () => {
           <div key={item.id} className="card">
             
             <img
-            src={item.thumbnail? `${BASE_URL}/storage/${item.thumbnail}`: "/placeholder.jpg"}
+            src={item.thumbnail? buildStorageUrl(item.thumbnail): "/placeholder.jpg"}
             width="80" style={{ border: "1px solid red" }}
             alt={item.name}
             />

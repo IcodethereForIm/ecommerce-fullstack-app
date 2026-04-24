@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import BASE_URL from "../config/api";
-import { buildUrl } from "../config/api";
+import { buildUrl,buildStorageUrl } from "../config/api";
 const api = (path) => buildUrl(`/api${path}`);
 
 export const CartContext = createContext();
@@ -15,7 +14,7 @@ export const CartProvider = ({ children }) => {
       product.image ?? product.images?.[0]?.image_path ?? null;
 
     return primaryImage
-      ? `${BASE_URL}/storage/${primaryImage}`
+      ? buildStorageUrl(primaryImage)
       : null;
   };
 

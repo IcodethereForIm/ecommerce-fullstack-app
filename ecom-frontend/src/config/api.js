@@ -6,6 +6,7 @@ if (!BASE_URL) {
 
 export const buildUrl = (endpoint) => `${BASE_URL.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}`;
 
-export const buildStorageUrl = (path) =>`${BASE_URL.replace(/\/$/, "")}/storage/${path.replace(/^\//, "")}`;
+export const buildStorageUrl = (path) =>{
+  return path || "https://via.placeholder.com/300";
+};
 
-export default BASE_URL
