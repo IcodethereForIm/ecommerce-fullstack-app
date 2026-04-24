@@ -8,7 +8,7 @@ export const magicLogin = async (email) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email }),
-    credentials: "include",
+    //credentials: "include",
   });
 
   const data = await res.json();
