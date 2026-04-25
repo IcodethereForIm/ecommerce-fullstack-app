@@ -109,7 +109,7 @@ Route::get('/collections/{slug}', [CollectionController::class, 'show']);
 
 
 Route::get('/search', [SearchController::class, 'index']);
-Route::post('/images', [ImageController::class, 'store']);
+
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
 
@@ -121,7 +121,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::patch('/products/{id}', [ProductController::class, 'updatePartial']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->where('id', '[0-9]+');
 
-    //Route::post('/images', [ImageController::class, 'store']);
+    Route::post('/images', [ImageController::class, 'store']);
     Route::delete('/images/{id}', [ImageController::class, 'destroy']);
 
     Route::post('/categories', [CategoryController::class, 'store']);
