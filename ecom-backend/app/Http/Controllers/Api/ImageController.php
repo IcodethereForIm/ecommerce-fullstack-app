@@ -19,8 +19,16 @@ class ImageController extends Controller
         ]);
 
         try {
+
+        \Cloudinary\Configuration\Configuration::instance([
+        'cloud' => [
+            'cloud_name' => config('cloudinary.cloud_name'),
+            'api_key'    => config('cloudinary.api_key'),
+            'api_secret' => config('cloudinary.api_secret'),
+        ],
+    ]);
             $uploaded = (new UploadApi())->upload(
-                $request->file('image')->getRealPath(),
+                $request->file('image')->getPathname(),
                 [
                     'folder' => 'site-images'
                 ]
