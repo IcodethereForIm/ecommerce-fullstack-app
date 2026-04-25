@@ -12,7 +12,12 @@ class ImageController extends Controller
     //
      // Upload Image
     public function store(Request $request)
-    {
+    {   
+        dd(
+        env('CLOUDINARY_CLOUD_NAME'),
+        env('CLOUDINARY_API_KEY'),
+        env('CLOUDINARY_API_SECRET')
+    );
         $request->validate([
             'image' => 'required|image|max:2048',
         ]);
