@@ -17,9 +17,9 @@ function ImageLibrary() {
     const formData = new FormData();
     formData.append("image", image);
     formData.append("alt_text", altText);
-
+    //have to change /admin/images
     try {
-      const res = await axios.post(api("/admin/images"), formData, {
+      const res = await axios.post(api("/images"), formData, {
         headers: {
           "Content-Type": "multipart/form-data","Authorization": `Bearer ${token}`,
         },

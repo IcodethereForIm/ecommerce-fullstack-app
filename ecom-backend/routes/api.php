@@ -21,35 +21,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use Cloudinary\Configuration\Configuration;
-use Cloudinary\Api\Upload\UploadApi;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary as Cloud;
 
-//0zNg8z8FHVTLAy5YmPDOHC6AiJCxcFko6ZCWgQc2
-Route::get('/env-debug', function () {
-    return [
-        'base_path_env_exists' => file_exists(base_path('.env')),
-        'env_value' => env('CLOUDINARY_URL'),
-    ];
-});
-Route::get('/check-file', function () {
-    $path = storage_path('app/public/images/0zNg8z8FHVTLAy5YmPDOHC6AiJCxcFko6ZCWgQc2.jpg');
-    return [
-        'exists' => file_exists($path),
-        'path' => $path
-    ];
-});
 
-Route::get('/test-cloudinary', function () {
-
-    $filePath = storage_path('app/public/images/0zNg8z8FHVTLAy5YmPDOHC6AiJCxcFko6ZCWgQc2.jpg');
-
-    $result = (new UploadApi())->upload($filePath, [
-    'folder' => 'test'
-]);
-
-    return $result['secure_url'];
-});
 
 
 Route::get('/health', function () {
@@ -136,6 +109,7 @@ Route::get('/collections/{slug}', [CollectionController::class, 'show']);
 
 
 Route::get('/search', [SearchController::class, 'index']);
+Route::post('/images', [ImageController::class, 'store']);
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
 
@@ -147,7 +121,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::patch('/products/{id}', [ProductController::class, 'updatePartial']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->where('id', '[0-9]+');
 
-    Route::post('/images', [ImageController::class, 'store']);
+    //Route::post('/images', [ImageController::class, 'store']);
     Route::delete('/images/{id}', [ImageController::class, 'destroy']);
 
     Route::post('/categories', [CategoryController::class, 'store']);
