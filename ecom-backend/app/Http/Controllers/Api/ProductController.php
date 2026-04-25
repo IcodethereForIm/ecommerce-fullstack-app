@@ -66,11 +66,11 @@ class ProductController extends Controller
     $imagePath = null;
     if ($request->hasFile("images")) {
         $isFirst = true;
-
+    
         foreach ($request->file("images") as $img) {
-            //$path = $img->store("products", "public");
+            
             $uploaded = (new UploadApi())->upload(
-                    $img->getRealPath(),
+                    $img->getPathname(),
                     ['folder' => 'products']
             );
 
@@ -244,7 +244,6 @@ public function updatePartial(Request $request, $id)
 
         
         if ($request->hasFile("images")) {
-
             
             foreach ($product->images as $img) {
                 if ($img->public_id) {
