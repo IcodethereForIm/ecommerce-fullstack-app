@@ -70,9 +70,8 @@ const CategoryProducts = () => {
     }
   }, [collection]);
 
-  //if (loading) return <p>Loading products...</p>;
-  //if (!products.length) return <p>No products found in "{category}" category.</p>;
 
+  
   return (
     <div className="category-page">
       {collection?.components?.map((comp,index)=>{
@@ -87,7 +86,7 @@ const CategoryProducts = () => {
               key={index}
               products={products[index] || []}
               addToCart={addToCart}
-              title={`${slug.toUpperCase()} PRODUCTS`}
+              title={comp.data?.source?.type}
               />
             )
           default:

@@ -23,11 +23,24 @@ function ProductScrollSection({ products = [], addToCart, title }) {
 
   if (!products.length) return null;
 
+  const formatTitle = (type) => {
+  if (!type) return null;
+
+  return type.charAt(0).toUpperCase() + type.slice(1);
+};
+
+const formattedTitle = formatTitle(title)
+  
+
   return (
     <div className="container-fluid px-0 position-relative my-4">
       
       {/* Title (optional) */}
-      {title && <h2 className="category-title">{title}</h2>}
+      {formattedTitle && (
+  
+    <h2 className={styles.title}>| {formattedTitle}</h2>
+      
+    )}
 
       {/* Arrows */}
       <button

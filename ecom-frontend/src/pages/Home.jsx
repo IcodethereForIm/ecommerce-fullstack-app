@@ -64,6 +64,7 @@ function Home(){
               fetchProducts();
             }
           }, [collection]);
+
         
     return(
         <>
@@ -79,7 +80,7 @@ function Home(){
               key={index}
               products={products[index] || []}
               addToCart={addToCart}
-              title={`Cool Ts`}
+              title={comp.data?.source?.type}
               />
                 )
             }
