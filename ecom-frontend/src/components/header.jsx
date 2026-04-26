@@ -28,6 +28,20 @@ const totalItems = cartItems.reduce(
 
       <Link className="nav-link" to="/">Home</Link>
 
+      {user?.role === "admin" && (
+    <div className="dropdown">
+      <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        Admin
+      </a>
+      <ul className="dropdown-menu">
+        <li><Link className="dropdown-item" to="/register">New Register</Link></li>
+        <li><Link className="dropdown-item" to="/signin">Sign In</Link></li>
+        <li><hr className="dropdown-divider" /></li>
+        <li><Link className="dropdown-item" to="/admin">Admin Pannel</Link></li>
+      </ul>
+    </div>
+  )}
+
       <div className="dropdown">
         <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown">
           Categories
