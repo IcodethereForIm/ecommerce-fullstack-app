@@ -125,7 +125,7 @@ const ProductCard = ({ product, addToCart }) => {
         </div>
         <button className="btn btn-dark w-100 mt-3" onClick={() => {if (!selectedSize) return alert("Select size");
                addToCart({...product,selectedSize, quantity});  setDrawerOpen(false); navigate("/checkout"); }}>
-              <FaShoppingCart className="me-2" /> Add to Cart & Buy Now
+              <FaShoppingCart className="me-2" /> Buy Now
             </button>
         </div>
             

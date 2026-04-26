@@ -6,6 +6,7 @@ import { CartContext } from "../context/CartContext";
 import Hero from "../components/Banners/BannersTypeOne/Hero";
 import { getFilteredProducts } from "../services/ProductFilterService";
 const api = (path) => buildUrl(`/api${path}`);
+import styles from "../components/Card.module.css";
 
 function CollectionPage(){
     const { slug } = useParams();
@@ -76,10 +77,10 @@ function CollectionPage(){
             {slug.toUpperCase()} COLLECTIONS
           </h2>
 
-          <div className="row g-2 mx-0">
+          <div className={styles.productsGrid}>
             {Array.isArray(products[index]) &&
   products[index].map((product) => (
-    <div key={product.id} className="col-6 col-md-4 col-lg-3 px-1">
+    <div key={product.id} className={styles.productCardWrapper}>
       <ProductCard product={product} addToCart={addToCart} />
     </div>
 ))}

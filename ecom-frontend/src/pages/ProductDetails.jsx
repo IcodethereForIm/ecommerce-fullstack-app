@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import ProductCard from "../components/ProductCard";
 const api = (path) => buildUrl(`/api${path}`);
+import styles from "../components/Card.module.css";
 
 function ProductDetails() {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ function ProductDetails() {
   const [selectedSize, setSelectedSize] = React.useState(null);
   const [quantity, setQuantity] = React.useState(1);
   const [openSection, setOpenSection] = React.useState(null);
+  const [showGallery, setShowGallery] = React.useState(false);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
 
   React.useEffect(() => {
     const fetchProduct = async () => {
@@ -54,7 +57,12 @@ function ProductDetails() {
               <img
                 src={buildStorageUrl(mainImage)}
                 className="img-fluid mb-2 main-img"
+                style={{ width: "100%", maxHeight: "700px", objectFit: "cover", cursor: "zoom-in" }}
                 alt={product?.name}
+                onClick={() => {
+                  setCurrentIndex(0);
+                  setShowGallery(true);
+                }}
               />
             ) : (
               <img
@@ -210,17 +218,66 @@ function ProductDetails() {
             </div>
           </div>
         </div>
-
-        {/* RELATED PRODUCTS */}
-        <h4 className="mt-5">More Products</h4>
-        <div className="row">
-  {releated?.map((p) => (
-    <div className="col-md-3 mb-4" key={p.id}>
-      <ProductCard product={p} addToCart={addToCart} />
-    </div>
-  ))}
-</div>
       </div>
+      {/* 🔥 NOW FULL WIDTH SECTION */}
+  <div className="mt-5 px-4">
+    <h4>More Products</h4>
+
+    <div className={styles.productsGrid}>
+      {releated?.map((p) => (
+        <div className={styles.productCardWrapper} key={p.id}>
+          <ProductCard product={p} addToCart={addToCart} />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {showGallery && (
+  <div className={styles.imageOverlay}>
+    
+    {/*  Close */}
+    <button
+      className={styles.galleryCloseBtn}
+      onClick={() => setShowGallery(false)}
+    >
+      ✕
+    </button>
+
+    {/* ← LEFT */}
+    <button
+      className={styles.leftArrow}
+      onClick={() =>
+        setCurrentIndex((prev) =>
+          prev === 0 ? product.images.length - 1 : prev - 1
+        )
+      }
+    >
+      ‹
+    </button>
+
+    {/* IMAGE */}
+    <div className={styles.singleImageContainer}>
+      <img
+        src={buildStorageUrl(product.images[currentIndex].image_path)}
+        className={styles.singleImage}
+        alt="preview"
+      />
+    </div>
+
+    {/* → RIGHT */}
+    <button
+      className={styles.rightArrow}
+      onClick={() =>
+        setCurrentIndex((prev) =>
+          prev === product.images.length - 1 ? 0 : prev + 1
+        )
+      }
+    >
+      ›
+    </button>
+
+  </div>
+)}
     </>
   );
 }

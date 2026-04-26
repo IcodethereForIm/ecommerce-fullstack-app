@@ -24,18 +24,8 @@ const totalItems = cartItems.reduce(
       {/* Brand */}
       <a className="navbar-brand" href="#">Brand Icon</a>
 
-      {/* Hamburger */}
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-
-      {/* LEFT SIDE (only menu items inside collapse) */}
-      <div className="collapse navbar-collapse" id="navbarNav">
+      {/* LEFT SIDE (NO COLLAPSE NOW) */}
+      <div className="navbar-collapse">
         <ul className="navbar-nav me-auto">
 
           <li className="nav-item">
@@ -76,7 +66,7 @@ const totalItems = cartItems.reduce(
         </ul>
       </div>
 
-      {/* RIGHT SIDE (ALWAYS visible) */}
+      {/* RIGHT SIDE (UNCHANGED) */}
       <div className="d-flex align-items-center gap-3 ms-auto">
 
         <div className="d-none d-md-block">
